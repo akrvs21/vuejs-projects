@@ -1,9 +1,10 @@
 <template>
   <div class="calculator">
-    <div class="display">{{ current }}</div>
+    <div v-if="!secVar"class="display">{{ current }}</div>
+    <div v-if="secVar" class="display">{{ temp }}</div>
     <div @click="clear" class="btn">AC</div>
     <div @click="sign" class="btn">+/-</div>
-    <div @click="calculate" class="btn">%</div>
+    <div @click="calcPerc" class="btn">%</div>
     <div @click="calculate" class="btn operator">/</div>
     <div @click="getNum" class="btn">7</div>
     <div @click="getNum" class="btn">8</div>
@@ -30,7 +31,8 @@
         current: '0',
         answer: '',
         temp: '',
-        op: ''
+        op: '',
+        secVar: false
       }
     },
     methods: {
@@ -38,6 +40,7 @@
         this.current = 0;
         this.temp = 0;
         this.op = '';
+        this.secVar = false;
       },
       sign() {
         if (this.current.charAt(0) == '-') {
@@ -48,21 +51,31 @@
       },
       getNum(e) {
         if (this.current == '0') {
+          this.secVar = false;
           // console.log(e.target.textContent)
           this.current = e.target.textContent;
         } else {
+          this.secVar = false;
           this.current += e.target.textContent;
         }
       },
       calculate(e) {
+        if (this.secVar == false){
         this.temp = Number(this.current);
         this.op = e.target.textContent;
         this.current = ''
+        this.secVar = true
         console.log(typeof(this.op));
-        
+        } else {
+          return;
+        }
+      },
+      calcPerc() {
+        this.current /= 100
       },
       showAns() {
-        switch(this.op) {
+        this.secVar = false
+        switch (this.op) {
           case 'x':
             this.current = this.temp * Number(this.current)
             break;
@@ -95,8 +108,7 @@
     grid-template-columns: repeat(4, 1fr);
     grid-auto-rows: minmax(50px, auto);
     font-family: lighter;
-  }
-  // Span the entire 4 columns
+  } // Span the entire 4 columns
   .display {
     grid-column: 1 / 5;
     background-color: #1F1F1F;
