@@ -18,6 +18,6 @@ npm run build
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).     
 
-![Alt text](./demo1.gif)
+![demo](./demo1.gif)
 
 <video src="./demo.mp4" width="800px" height="600px" controls="controls"></video>
