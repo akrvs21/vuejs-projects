@@ -20,6 +20,8 @@ npm run build --report
 
 ## Demo   
 
+![demo](./demo/demo.gif)  
+
 <video src="./demo/demo.mp4" width="800px" height="600px" controls="controls"></video>
 
 ![demo](./demo/1.png)
