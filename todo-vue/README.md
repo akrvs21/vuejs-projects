@@ -20,12 +20,12 @@ npm run build --report
 
 ## Demo   
 
-![demo](./demo/demo.gif)  
+      ![demo](./demo/demo.gif)  
 
 <video src="./demo/demo.mp4" width="800px" height="600px" controls="controls"></video>
 
-![demo](./demo/1.png)
+     ![demo](./demo/1.png)
 
-![demo](./demo/2.png)
+     ![demo](./demo/2.png)
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
