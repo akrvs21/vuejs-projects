@@ -56,7 +56,8 @@
 </template>
 
 <script>
-    import firebase from '../firebase.js'
+/* eslint-disable */
+    import {fb} from '../firebase.js'
     export default {
         name: 'Login',
         props: {
@@ -71,7 +72,12 @@
         },
         methods: {
             register() {
-                firebase.auth().createUserWithEmailAndPassword(this.email, this.password).catch(function(error) {
+                fb.auth().createUserWithEmailAndPassword(this.email, this.password)
+                .then((user) => {
+                    this.$router.replace('admin') // redirect to the admin page
+                    // this.$router.push(route, () => {});
+                })
+                .catch(function(error) {
                     // Handle Errors here.
                     var errorCode = error.code;
                     var errorMessage = error.message;
