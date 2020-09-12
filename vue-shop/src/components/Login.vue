@@ -26,7 +26,7 @@
                                     <input type="password" @keyup.enter="login" v-model="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
                                 </div>
                                 <div class="form-group">
-                                    <button class="btn btn-primary" @click="login">Login</button>
+                                    <!-- <button class="btn btn-primary" @click="login">Login</button> -->
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="pills-register-tab">
@@ -74,6 +74,7 @@
             register() {
                 fb.auth().createUserWithEmailAndPassword(this.email, this.password)
                 .then((user) => {
+                    $('#login').modal('hide')
                     this.$router.replace('admin') // redirect to the admin page
                     // this.$router.push(route, () => {});
                 })
