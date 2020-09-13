@@ -15,12 +15,12 @@
                         </div>
                         <div class="user-info">
                             <span class="user-name">Jhon
-                                                        <strong>Smith</strong>
-                                                    </span>
+                                                                <strong>Smith</strong>
+                                                            </span>
                             <span class="user-role">Administrator</span>
                             <span class="user-status">
-                                                        <i class="fa fa-circle"></i>
-                                                        <span>Online</span>
+                                                                <i class="fa fa-circle"></i>
+                                                                <span>Online</span>
                             </span>
                         </div>
                     </div>
@@ -31,8 +31,8 @@
                                 <input type="text" class="form-control search-menu" placeholder="Search...">
                                 <div class="input-group-append">
                                     <span class="input-group-text">
-                                                                <i class="fa fa-search" aria-hidden="true"></i>
-                                                            </span>
+                                                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -78,6 +78,25 @@
             <div class="page-content">
                 <h3 class="d-inline-block">Product List</h3>
                 <button @click="addProduct" class="btn btn-primary float-right">Add product</button>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Name</td>
+                            <td>Price</td>
+                            <td>Modify</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in items">
+                            <td>
+                                {{ item.name }}
+                            </td>
+                            <td>
+                                {{ item.price }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <!-- Modal -->
             <div class="modal fade" id="myModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -86,25 +105,25 @@
                         <div class="modal-header">
                             <h5 class="modal-title" id="staticBackdropLabel">Edit Product</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
+                              <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="modal-body">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Product Name" aria-label="Product Name" aria-describedby="basic-addon1">
+                                <input type="text" class="form-control" v-model="products.name" placeholder="Product Name" aria-label="Product Name" aria-describedby="basic-addon1">
                             </div>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Product description</span>
                                 </div>
-                                <textarea class="form-control" aria-label="With textarea"></textarea>
+                                <textarea class="form-control" v-model="products.description" aria-label="With textarea"></textarea>
                             </div>
                             <h5 class="modal-title" style="margin-bottom:12px; margin-top:12px" id="staticBackdropLabel">Product Detail</h5>
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Product price" aria-label="Product price" aria-describedby="basic-addon2">
+                                <input type="text" class="form-control" v-model="products.price" placeholder="Product price" aria-label="Product price" aria-describedby="basic-addon2">
                             </div>
                             <div class="input-group mb-3">
-                                <input type="text" placeholder="Product tags" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                                <input type="text" placeholder="Product tags" v-model="products.tags" class="form-control" id="basic-url" aria-describedby="basic-addon3">
                             </div>
                             <div class="input-group">
                                 <div class="custom-file">
@@ -115,7 +134,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Understood</button>
+                            <button @click="saveChanges" type="button" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
                 </div>
@@ -143,13 +162,25 @@
                 items: [],
                 products: {
                     name: null,
-                    price: null
+                    price: null,
+                    description: null,
+                    tags: null,
+                    file: null
                 }
+            }
+        },
+        firestore() {
+            return {
+                items: db.collection("products")
             }
         },
         methods: {
             addProduct() {
                 $('#myModal').modal('show')
+            },
+            saveChanges() {
+                this.$firestore.items.add(this.products)
+                $('#myModal').modal('hide')
             }
         }
     }
