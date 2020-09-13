@@ -5,6 +5,9 @@ import 'bootstrap';
 import './assets/app.scss';
 import jQuery from 'jquery'
 import 'popper.js'
+import VueFirestore from 'vue-firestore'
+
+Vue.use(VueFirestore)
 
 window.$ = window.jQuery = jQuery;
 

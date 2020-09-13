@@ -1,5 +1,5 @@
 <template>
-<!-- eslint-disable  -->
+    <!-- eslint-disable  -->
     <div class="admin">
         <div class="page-wrapper default-theme sidebar-bg bg1 toggled">
             <nav id="sidebar" class="sidebar-wrapper">
@@ -15,12 +15,12 @@
                         </div>
                         <div class="user-info">
                             <span class="user-name">Jhon
-                                        <strong>Smith</strong>
-                                    </span>
+                                                        <strong>Smith</strong>
+                                                    </span>
                             <span class="user-role">Administrator</span>
                             <span class="user-status">
-                                        <i class="fa fa-circle"></i>
-                                        <span>Online</span>
+                                                        <i class="fa fa-circle"></i>
+                                                        <span>Online</span>
                             </span>
                         </div>
                     </div>
@@ -31,8 +31,8 @@
                                 <input type="text" class="form-control search-menu" placeholder="Search...">
                                 <div class="input-group-append">
                                     <span class="input-group-text">
-                                                <i class="fa fa-search" aria-hidden="true"></i>
-                                            </span>
+                                                                <i class="fa fa-search" aria-hidden="true"></i>
+                                                            </span>
                                 </div>
                             </div>
                         </div>
@@ -74,23 +74,54 @@
                     <!-- sidebar-menu  -->
                 </div>
             </nav>
-            <!-- page-content  -->
-            <main class="page-content pt-2">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Product name and price</span>
+            <!-- page content -->
+            <div class="page-content">
+                <h3 class="d-inline-block">Product List</h3>
+                <button @click="addProduct" class="btn btn-primary float-right">Add product</button>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Edit Product</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Product Name" aria-label="Product Name" aria-describedby="basic-addon1">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Product description</span>
+                                </div>
+                                <textarea class="form-control" aria-label="With textarea"></textarea>
+                            </div>
+                            <h5 class="modal-title" style="margin-bottom:12px; margin-top:12px" id="staticBackdropLabel">Product Detail</h5>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Product price" aria-label="Product price" aria-describedby="basic-addon2">
+                            </div>
+                            <div class="input-group mb-3">
+                                <input type="text" placeholder="Product tags" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                            </div>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
+                                    <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Understood</button>
+                        </div>
                     </div>
-                    <input type="text" v-model="products.name" aria-label="First name" class="form-control">
-                    <input type="text" v-model="products.price" aria-label="Last name" class="form-control">
                 </div>
-                <div class="form-group">
-                    <button class="btn btn-primary" @click="saveData">
-                                Save data
-                            </button>
-                </div>
-                <router-view/>
-            </main>
-            <!-- page-content" -->
+            </div>
+            <!-- Modal -->
+            <!-- page content -->
         </div>
         <!-- page-wrapper -->
     </div>
@@ -114,6 +145,11 @@
                     name: null,
                     price: null
                 }
+            }
+        },
+        methods: {
+            addProduct() {
+                $('#myModal').modal('show')
             }
         }
     }
