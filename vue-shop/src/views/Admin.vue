@@ -15,12 +15,12 @@
                         </div>
                         <div class="user-info">
                             <span class="user-name">Jhon
-                                                                <strong>Smith</strong>
-                                                            </span>
+                                                                                        <strong>Smith</strong>
+                                                                                    </span>
                             <span class="user-role">Administrator</span>
                             <span class="user-status">
-                                                                <i class="fa fa-circle"></i>
-                                                                <span>Online</span>
+                                                                                        <i class="fa fa-circle"></i>
+                                                                                        <span>Online</span>
                             </span>
                         </div>
                     </div>
@@ -31,8 +31,8 @@
                                 <input type="text" class="form-control search-menu" placeholder="Search...">
                                 <div class="input-group-append">
                                     <span class="input-group-text">
-                                                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                                                    </span>
+                                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -77,7 +77,7 @@
             <!-- page content -->
             <div class="page-content">
                 <h3 class="d-inline-block">Product List</h3>
-                <button @click="addProduct" class="btn btn-primary float-right">Add product</button>
+                <button @click="addNew" class="btn btn-primary float-right">Add product</button>
                 <table class="table">
                     <thead>
                         <tr>
@@ -87,12 +87,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="item in items">
+                        <tr v-for="product in products">
                             <td>
-                                {{ item.name }}
+                                {{ product.name }}
                             </td>
                             <td>
-                                {{ item.price }}
+                                {{ product.price }}
+                            </td>
+                            <td>
+                                <button @click="editProduct(product)" class="btn btn-primary">Edit</button>
+                                <button @click="deleteProduct(product)" class="btn btn-danger">Delete</button>
                             </td>
                         </tr>
                     </tbody>
@@ -105,8 +109,8 @@
                         <div class="modal-header">
                             <h5 class="modal-title" id="staticBackdropLabel">Edit Product</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
+                                                      <span aria-hidden="true">&times;</span>
+                                                    </button>
                         </div>
                         <div class="modal-body">
                             <div class="input-group mb-3">
@@ -134,7 +138,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button @click="saveChanges" type="button" class="btn btn-primary">Save changes</button>
+                            <button @click="saveNewProduct" v-if="editMode == 'new'" type="button" class="btn btn-primary">Save product</button>
+                            <button @click="updateProductInfo" v-if="editMode == 'edit'" type="button" class="btn btn-primary">Update changes</button>
                         </div>
                     </div>
                 </div>
@@ -159,27 +164,73 @@
         },
         data() {
             return {
-                items: [],
-                products: {
+                products: [],
+                product: {
                     name: null,
                     price: null,
                     description: null,
                     tags: null,
-                    file: null
-                }
+                    images: null
+                },
+                activeItem: null,
+                editMode: null,
             }
         },
         firestore() {
             return {
-                items: db.collection("products")
+                products: db.collection("products")
             }
         },
         methods: {
-            addProduct() {
+            reset() {
+                this.product = {
+                    name: null,
+                    price: null,
+                    description: null,
+                    tags: [],
+                    images: []
+                }
+            },
+            addNew() {
+                this.editMode = 'new';
+                console.log(this.editMode)
+                this.reset()
                 $('#myModal').modal('show')
             },
-            saveChanges() {
-                this.$firestore.items.add(this.products)
+            editProduct(product) {
+                this.editMode = 'edit';
+                console.log(this.editMode)
+                console.log(product)
+                this.products = product
+                this.activeItem = product['.key']
+                $('#myModal').modal('show')
+            },
+            updateProductInfo() {
+                this.$firestore.products.doc(this.activeItem).update(this.product)
+                $('#myModal').modal('hide')
+            },
+            deleteProduct(item) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        console.log(item)
+                        this.$firestore.products.doc(item['.key']).delete()
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Deleted successfully'
+                        })
+                    }
+                })
+            },
+            saveNewProduct() {
+                this.$firestore.products.add(this.product)
                 $('#myModal').modal('hide')
             }
         }
