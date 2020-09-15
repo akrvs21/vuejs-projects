@@ -114,20 +114,20 @@
                         </div>
                         <div class="modal-body">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" v-model="products.name" placeholder="Product Name" aria-label="Product Name" aria-describedby="basic-addon1">
+                                <input type="text" class="form-control" v-model="product.name" placeholder="Product Name" aria-label="Product Name" aria-describedby="basic-addon1">
                             </div>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Product description</span>
                                 </div>
-                                <textarea class="form-control" v-model="products.description" aria-label="With textarea"></textarea>
+                                <textarea class="form-control" v-model="product.description" aria-label="With textarea"></textarea>
                             </div>
                             <h5 class="modal-title" style="margin-bottom:12px; margin-top:12px" id="staticBackdropLabel">Product Detail</h5>
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" v-model="products.price" placeholder="Product price" aria-label="Product price" aria-describedby="basic-addon2">
+                                <input type="text" class="form-control" v-model="product.price" placeholder="Product price" aria-label="Product price" aria-describedby="basic-addon2">
                             </div>
                             <div class="input-group mb-3">
-                                <input type="text" placeholder="Product tags" v-model="products.tags" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                                <input type="text" placeholder="Product tags" v-model="product.tags" class="form-control" id="basic-url" aria-describedby="basic-addon3">
                             </div>
                             <div class="input-group">
                                 <div class="custom-file">
@@ -172,7 +172,6 @@
                     tags: null,
                     images: null
                 },
-                activeItem: null,
                 editMode: null,
             }
         },
@@ -200,16 +199,21 @@
             editProduct(product) {
                 this.editMode = 'edit';
                 console.log(this.editMode)
-                console.log(product)
-                this.products = product
-                this.activeItem = product['.key']
+                console.log(product)           
+                this.product = product
                 $('#myModal').modal('show')
             },
             updateProductInfo() {
-                this.$firestore.products.doc(this.activeItem).update(this.product)
+                console.log(this.product)
+                this.$firestore.products.doc(this.product.id).update(this.product)
                 $('#myModal').modal('hide')
+                Toast.fire({
+                            icon: 'success',
+                            title: 'Updated successfully'
+                        })
             },
             deleteProduct(item) {
+                this.product = item
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -221,7 +225,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         console.log(item)
-                        this.$firestore.products.doc(item['.key']).delete()
+                        this.$firestore.products.doc(this.product.id).delete()
                         Toast.fire({
                             icon: 'success',
                             title: 'Deleted successfully'
@@ -232,6 +236,10 @@
             saveNewProduct() {
                 this.$firestore.products.add(this.product)
                 $('#myModal').modal('hide')
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Added successfully'
+            })
             }
         }
     }
