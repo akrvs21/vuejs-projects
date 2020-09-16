@@ -183,7 +183,17 @@
                                            for="inputGroupFile04">Choose file</label>
                                 </div>
                             </div>
+                            <!-- <div class="d-flex"> -->
+                                <div class="p-1 d-inline-block"
+                                     v-for="image in product.images">
+                                    <img :src="image"
+                                         width="80px"
+                                         height="80px">
+                                </div>
+                            <!-- </div> -->
+
                         </div>
+
                         <div class="modal-footer">
                             <button type="button"
                                     class="btn btn-secondary"
@@ -230,7 +240,7 @@
                     price: null,
                     description: null,
                     tags: [],
-                    images: null
+                    images: []
                 },
                 tag: null,
                 editMode: null,
@@ -243,47 +253,49 @@
         },
         methods: {
             updateImage(e) {
-                let file = e.target.files[0]
-                var storageRef = fb.storage().ref('products/' + file.name);
-                var uploadTask = storageRef.put(file)
-                
-                // Listen for state changes, errors, and completion of the upload.
-                uploadTask.on('state_changed', // or 'state_changed'
-                     (snapshot) => {
-                        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-                        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        console.log('Upload is ' + progress + '% done');
-                        switch (snapshot.state) {
-                            case 'paused': // or 'paused'
-                                console.log('Upload is paused');
-                                break;
-                            case 'running': // or 'running'
-                                console.log('Upload is running');
-                                break;
-                        }
-                    },  (error) => {
+                if (e.target.files[0]) {
+                    let file = e.target.files[0]
+                    var storageRef = fb.storage().ref('products/' + file.name);
+                    var uploadTask = storageRef.put(file)
 
-                        // A full list of error codes is available at
-                        // https://firebase.google.com/docs/storage/web/handle-errors
-                        switch (error.code) {
-                            case 'storage/unauthorized':
-                                // User doesn't have permission to access the object
-                                break;
+                    // Listen for state changes, errors, and completion of the upload.
+                    uploadTask.on('state_changed', // or 'state_changed'
+                        (snapshot) => {
+                            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                            console.log('Upload is ' + progress + '% done');
+                            switch (snapshot.state) {
+                                case 'paused': // or 'paused'
+                                    console.log('Upload is paused');
+                                    break;
+                                case 'running': // or 'running'
+                                    console.log('Upload is running');
+                                    break;
+                            }
+                        }, (error) => {
 
-                            case 'storage/canceled':
-                                // User canceled the upload
-                                break;
-                            case 'storage/unknown':
-                                // Unknown error occurred, inspect error.serverResponse
-                                break;
-                        }
-                    },  () => {
-                        // Upload completed successfully, now we can get the download URL
-                        uploadTask.snapshot.ref.getDownloadURL().then( (downloadURL) => {
-                            this.product.images = downloadURL
-                            console.log('File available at', downloadURL);
+                            // A full list of error codes is available at
+                            // https://firebase.google.com/docs/storage/web/handle-errors
+                            switch (error.code) {
+                                case 'storage/unauthorized':
+                                    // User doesn't have permission to access the object
+                                    break;
+
+                                case 'storage/canceled':
+                                    // User canceled the upload
+                                    break;
+                                case 'storage/unknown':
+                                    // Unknown error occurred, inspect error.serverResponse
+                                    break;
+                            }
+                        }, () => {
+                            // Upload completed successfully, now we can get the download URL
+                            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                                this.product.images.push(downloadURL)
+                                console.log('File available at', downloadURL);
+                            });
                         });
-                    });
+                }
 
                 // console.log(e.target.files[0])
             },
