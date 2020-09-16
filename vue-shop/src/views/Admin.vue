@@ -183,15 +183,13 @@
                                            for="inputGroupFile04">Choose file</label>
                                 </div>
                             </div>
-                            <!-- <div class="d-flex"> -->
-                                <div class="p-1 d-inline-block"
-                                     v-for="image in product.images">
-                                    <img :src="image"
-                                         width="80px"
-                                         height="80px">
-                                </div>
-                            <!-- </div> -->
-
+                            <div class="p-1 d-inline-block" style="position: relative"
+                                 v-for="(image,index) in product.images">
+                                <img :src="image"
+                                     width="80px"
+                                     height="80px">
+                                <div @click="deleteImage(image,index)"  class="del-img">X</div>
+                            </div>
                         </div>
 
                         <div class="modal-footer">
@@ -252,6 +250,16 @@
             }
         },
         methods: {
+            deleteImage(image, index) {
+                var img = fb.storage().refFromURL(image);
+                this.product.images.splice(index, 1);
+                // Delete the file
+                img.delete().then(function () {
+                    console.log('File deleted successfully')
+                }).catch(function (error) {
+                    console.log('Uh-oh, an error occurred!')
+                });
+            },
             updateImage(e) {
                 if (e.target.files[0]) {
                     let file = e.target.files[0]
@@ -369,6 +377,14 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+    .del-img {
+      position: absolute;
+      top: -6px;
+      left: -4px;
+      font-weight: bold;
+      color: red;
+      cursor: pointer;
+    }
     .tag {
       background-color: rgb(203, 209, 216);
       padding: 10px;
