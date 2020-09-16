@@ -1,6 +1,7 @@
 import firebase from 'firebase'
 
 require("firebase/firestore");
+require("firebase/storage")
 
 /* eslint-disable */
 // var database = firebase.database();
