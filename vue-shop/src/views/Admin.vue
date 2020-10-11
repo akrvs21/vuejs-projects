@@ -21,7 +21,7 @@
                             <span class="user-name">Jhon
                                 <strong>Smith</strong>
                             </span>
-                            <span class="user-role">Administrator</span>
+                            <span class="user-role">{{ email }}</span>
                             <span class="user-status">
                                 <i class="fa fa-circle"></i>
                                 <span>Online</span>
@@ -71,11 +71,18 @@
                                 </router-link>
                             </li>
                             <li>
+                                <router-link to="/admin/profile">
+                                    <i class="fa fa-user"></i>
+                                    <span class="menu-text">Profile</span>
+                                </router-link>
+                            </li>
+                            <li>
                                 <router-link to="/admin/logout">
                                     <i class="fa fa-power-off"></i>
                                     <span class="menu-text">Logout</span>
                                 </router-link>
                             </li>
+
                         </ul>
                     </div>
                     <!-- sidebar-menu  -->
@@ -92,6 +99,9 @@
 
 <script>
     /* eslint-disable */
+    import {
+        fb
+    } from '../firebase.js'
     export default {
         name: 'Admin',
         props: {
@@ -102,7 +112,14 @@
         },
         data() {
             return {
-
+                name: null,
+                email:null,
+            }
+        },
+        created() {
+            var user = fb.auth().currentUser;
+            if (user != null) {
+                this.email = user.email;
             }
         }
     }
@@ -110,7 +127,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.page-wrapper.toggled .page-content {
-    padding-left: 150px;
-}
+    .page-wrapper.toggled .page-content {
+      padding-left: 30px;
+    }
 </style>

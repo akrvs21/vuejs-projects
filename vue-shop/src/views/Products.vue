@@ -295,6 +295,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+    // .page-content {
+    //     padding-left: 140px;    }
     .del-img {
       position: absolute;
       top: -6px;
