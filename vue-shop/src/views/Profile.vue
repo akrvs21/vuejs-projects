@@ -174,6 +174,8 @@ export default {
 
   firestore(){
       const user = fb.auth().currentUser;
+      console.log('from firestore func')
+      console.log(user.uid)
       return {
         profile: db.collection('profiles').doc(user.uid),
       }
@@ -206,6 +208,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .products {
-    margin-left: 40px;
+    margin-left: 90px;
 }
 </style>
