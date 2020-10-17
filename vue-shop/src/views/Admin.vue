@@ -77,10 +77,11 @@
                                 </router-link>
                             </li>
                             <li>
-                                <router-link to="/admin/logout">
+                                <a href="#"
+                                   @click="logout()">
                                     <i class="fa fa-power-off"></i>
                                     <span class="menu-text">Logout</span>
-                                </router-link>
+                                </a>
                             </li>
 
                         </ul>
@@ -113,7 +114,19 @@
         data() {
             return {
                 name: null,
-                email:null,
+                email: null,
+            }
+        },
+        methods: {
+            logout() {
+                var that = this
+                fb.auth().signOut().then(function () {
+                    // Sign-out successful.
+                    that.$router.replace('/');
+                }).catch(function (error) {
+                    // An error happened.
+                });
+
             }
         },
         created() {
