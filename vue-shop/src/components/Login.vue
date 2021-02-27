@@ -57,7 +57,8 @@
                                            v-model="password"
                                            class="form-control"
                                            id="exampleInputPassword1"
-                                           placeholder="Password">
+                                           placeholder="Password"
+                                           autocomplete="new-password"> 
                                 </div>
                                 <div class="form-group">
                                     <button class="btn btn-primary"
@@ -85,14 +86,15 @@
                                            id="email"
                                            aria-describedby="emailHelp"
                                            placeholder="Enter email">
-                                </div>
+                                </div> 
                                 <div class="form-group">
                                     <label for="password">Password</label>
                                     <input type="password"
                                            v-model="password"
                                            class="form-control"
                                            id="password"
-                                           placeholder="Password">
+                                           placeholder="Password"
+                                           autocomplete="new-password">
                                 </div>
                                 <div class="form-group">
                                     <button class="btn btn-primary"
@@ -110,6 +112,7 @@
 <script>
     /* eslint-disable */
     import { fb, db } from '../firebase.js'
+
     export default {
         name: 'Login',
         props: {

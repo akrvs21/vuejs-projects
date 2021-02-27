@@ -7,6 +7,7 @@ import jQuery from 'jquery'
 import 'popper.js'
 import VueFirestore from 'vue-firestore'
 import Swal from 'sweetalert2'
+
 // import 'firebase/'
 
 
