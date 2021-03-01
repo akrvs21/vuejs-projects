@@ -7,7 +7,9 @@
       <h5>Category: {{ event.category }}</h5>
     </div>
 
-    <BaseIcon name="map"><h2>Location</h2></BaseIcon>
+    <BaseIcon name="map">
+      <h2>Location</h2>
+    </BaseIcon>
 
     <address>{{ event.location }}</address>
 
@@ -18,7 +20,9 @@
       <span class="badge -fill-gradient">{{ event.attendees ? event.attendees.length : 0 }}</span>
     </h2>
     <ul class="list-group">
-      <li v-for="(attendee, index) in event.attendees" :key="index" class="list-item">
+      <li v-for="(attendee, index) in event.attendees"
+          :key="index"
+          class="list-item">
         <b>{{ attendee.name }}</b>
       </li>
     </ul>
@@ -26,45 +30,35 @@
 </template>
 
 <script>
-    import EventService from '@/services/EventService.js'
+  import { mapState } from 'vuex'
 
-    export default {
-        props: ['id']
-        ,
-        data() {
-            return {
-                event: {}
-            }
-        },
-        created() {
-            EventService.getEvent(this.id)
-                .then(response => {
-                    this.event = response.data
-                })
-                .catch(error => {
-                    console.log('There was an error: ', error.response);
-                })
-        }
-    }
+  export default {
+    props: ['id']
+    ,
+    created() {
+      this.$store.dispatch('fetchEvent', this.id)
+    },
+    computed: mapState(['event'])
+  }
 </script>
 
 <style scoped>
-.location {
-  margin-bottom: 0;
-}
-.location > .icon {
-  margin-left: 10px;
-}
-.event-header > .title {
-  margin: 0;
-}
-.list-group {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.list-group > .list-item {
-  padding: 1em 0;
-  border-bottom: solid 1px #e5e5e5;
-}
+  .location {
+    margin-bottom: 0;
+  }
+  .location > .icon {
+    margin-left: 10px;
+  }
+  .event-header > .title {
+    margin: 0;
+  }
+  .list-group {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .list-group > .list-item {
+    padding: 1em 0;
+    border-bottom: solid 1px #e5e5e5;
+  }
 </style>
