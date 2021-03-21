@@ -1,3 +1,3 @@
 module.exports = {
-    publicPath: '/event-scheduler/'
-  }
+  publicPath: 'vue_projects/event-scheduler'
+}
